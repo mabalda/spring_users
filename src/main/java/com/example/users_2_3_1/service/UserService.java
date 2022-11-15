@@ -6,6 +6,9 @@ import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.repository.RoleRepository;
 import com.example.users_2_3_1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -13,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -28,10 +31,6 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -41,7 +40,13 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        Role userRole = roleRepository.findByRole("ADMIN");
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+
+        if (userFromDB != null) {
+            return userFromDB;
+        }
+
+        Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         return userRepository.save(user);
@@ -49,5 +54,10 @@ public class UserService {
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }
