@@ -58,7 +58,7 @@ public class UserController {
 
     @PostMapping("/update_user")
     public String updateUser(User updatedUser) {
-        userService.saveUser(updatedUser);
+        userService.updateUser(updatedUser);
 
         return "redirect:/users";
     }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -50,6 +51,15 @@ public class UserService implements UserDetailsService {
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         return userRepository.save(user);
+    }
+
+    public void updateUser(User updatedUser) {
+        User userToBeUpdated = findById(updatedUser.getId());
+
+        Set<Role> roles = userToBeUpdated.getRoles();
+        updatedUser.setRoles(roles);
+
+        userRepository.save(updatedUser);
     }
 
     public void deleteById(Long id) {
