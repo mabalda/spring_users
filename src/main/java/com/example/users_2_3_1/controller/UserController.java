@@ -3,6 +3,9 @@ package com.example.users_2_3_1.controller;
 import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public String findAll(Model model) {
         List<User> users = userService.findAll();
 
@@ -30,26 +33,36 @@ public class UserController {
         return "all_users";
     }
 
-    @GetMapping("/users/new")
+    @GetMapping("/user")
+    public String showUser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+
+        model.addAttribute("user", user);
+
+        return "show_user";
+    }
+
+    @GetMapping("/admin/users/new")
     public String newUserForm(User user) {
         return "new_user";
     }
 
-    @PostMapping("/users/new")
+    @PostMapping("/admin/users/new")
     public String createNewUser(User user) {
         userService.saveUser(user);
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("delete_user/{id}")
+    @GetMapping("/admin/delete_user/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("/update_user/{id}")
+    @GetMapping("/admin/update_user/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
         User userToBeUpdated = userService.findById(id);
         model.addAttribute("user", userToBeUpdated);
@@ -60,6 +73,6 @@ public class UserController {
     public String updateUser(User updatedUser) {
         userService.updateUser(updatedUser);
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 }

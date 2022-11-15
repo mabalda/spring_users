@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<p><a href="/users/new">Create user</a></p>
+<p><a href="/admin/users/new">Create user</a></p>
 
 <div th:switch="${users}">
     <h2 th:case="null">No users found!</h2>
@@ -31,13 +31,15 @@
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.age}"></td>
                 <td th:text="${user.password}"></td>
-                <td><a th:href="@{update_user/{id}(id=${user.id})}">Edit</a></td>
-                <td><a th:href="@{delete_user/{id}(id=${user.id})}">Delete</a></td>
+                <td><a th:href="@{/admin/update_user/{id}(id=${user.id})}">Edit</a></td>
+                <td><a th:href="@{/admin/delete_user/{id}(id=${user.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<p><a href="/logout">Logout</a></p>
 
 </body>
 </html>

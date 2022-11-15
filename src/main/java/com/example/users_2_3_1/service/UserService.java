@@ -6,6 +6,7 @@ import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.repository.RoleRepository;
 import com.example.users_2_3_1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,7 @@ public class UserService implements UserDetailsService {
         this.roleRepository = roleRepository;
     }
 
+
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -36,10 +38,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
@@ -47,12 +51,13 @@ public class UserService implements UserDetailsService {
             return userFromDB;
         }
 
-        Role userRole = roleRepository.findByRole("USER");
+        Role userRole = roleRepository.findByRole("ROLE_USER");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         return userRepository.save(user);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateUser(User updatedUser) {
         User userToBeUpdated = findById(updatedUser.getId());
 
@@ -62,6 +67,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(updatedUser);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }

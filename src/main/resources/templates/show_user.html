@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.name}">Пользователь</title>
+</head>
+<body>
+
+<div>
+  <table border="1">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Имя</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Возраст</th>
+      <th>Пароль</th>
+    </tr>
+    </thead>
+    <tbody>
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.age}"></td>
+      <td th:text="${user.password}"></td>
+    </tbody>
+  </table>
+</div>
+
+<p><a href="/logout">Logout</a></p>
+
+</body>
+</html>
