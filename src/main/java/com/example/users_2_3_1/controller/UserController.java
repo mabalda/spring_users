@@ -24,6 +24,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+
     @GetMapping("/admin/users")
     public String findAll(Model model) {
         List<User> users = userService.findAll();
