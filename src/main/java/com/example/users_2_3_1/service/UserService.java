@@ -43,7 +43,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public User saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
