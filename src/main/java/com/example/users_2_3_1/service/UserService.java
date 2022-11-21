@@ -57,8 +57,8 @@ public class UserService implements UserDetailsService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateUser(User updatedUser) {
-        User userToBeUpdated = findById(updatedUser.getId());
+    public void updateUser(User updatedUser, Long id) {
+        User userToBeUpdated = findById(id);
 
         Set<Role> roles = userToBeUpdated.getRoles();
         updatedUser.setRoles(roles);

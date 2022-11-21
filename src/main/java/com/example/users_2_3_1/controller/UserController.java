@@ -3,17 +3,16 @@ package com.example.users_2_3_1.controller;
 import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -25,54 +24,52 @@ public class UserController {
 
 
     @GetMapping("/admin/users")
-    public String findAll(Model model) {
+    public ResponseEntity<List<User>> findAll(Model model) {
         List<User> users = userService.findAll();
 
-        model.addAttribute("users", users);
-
-        return "all_users";
+        return users != null && !users.isEmpty()
+                ? new ResponseEntity<>(users, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/user")
-    public String showUser(Model model) {
+    public ResponseEntity<User> showUser(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
 
-        model.addAttribute("user", user);
-
-        return "show_user";
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/admin/users/new")
-    public String newUserForm(User user) {
-        return "new_user";
-    }
+//    @GetMapping("/admin/users/new")
+//    public String newUserForm(User user) {
+//        return "new_user";
+//    }
 
     @PostMapping("/admin/users/new")
-    public String createNewUser(User user) {
+    public ResponseEntity<?> createNewUser(@RequestBody User user) {
         userService.saveUser(user);
 
-        return "redirect:/admin/users";
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/admin/delete_user/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    @DeleteMapping("/admin/delete_user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
 
-        return "redirect:/admin/users";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/admin/update_user/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        User userToBeUpdated = userService.findById(id);
-        model.addAttribute("user", userToBeUpdated);
-        return "update_user";
-    }
+//    @GetMapping("/admin/update_user/{id}")
+//    public String updateUserForm(@PathVariable("id") Long id, Model model) {
+//        User userToBeUpdated = userService.findById(id);
+//        model.addAttribute("user", userToBeUpdated);
+//        return "update_user";
+//    }
 
-    @PostMapping("/admin/update_user")
-    public String updateUser(User updatedUser) {
-        userService.updateUser(updatedUser);
+    @PutMapping("/admin/update_user/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User updatedUser) {
+        userService.updateUser(updatedUser, id);
 
-        return "redirect:/admin/users";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
