@@ -3,9 +3,14 @@ package com.example.users_2_3_1.controller;
 import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -37,5 +42,15 @@ public class AuthController {
         userService.saveUser(user);
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/main")
+    public String getMainPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+
+        model.addAttribute("user", user);
+
+        return "index";
     }
 }
