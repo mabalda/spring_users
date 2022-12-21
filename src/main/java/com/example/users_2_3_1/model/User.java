@@ -72,4 +72,16 @@ public class User implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean isAdmin() {
+        Set<Role> roles = getRoles();
+
+        for (Role role : roles) {
+            if (role.getRole().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

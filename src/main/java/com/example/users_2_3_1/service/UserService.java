@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -50,9 +48,6 @@ public class UserService implements UserDetailsService {
             return userFromDB;
         }
 
-        Role userRole = roleRepository.findByRole("ROLE_USER");
-        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
-
         return userRepository.save(user);
     }
 
@@ -60,8 +55,12 @@ public class UserService implements UserDetailsService {
     public void updateUser(User updatedUser, Long id) {
         User userToBeUpdated = findById(id);
 
-        Set<Role> roles = userToBeUpdated.getRoles();
-        updatedUser.setRoles(roles);
+        updatedUser.setPassword(userToBeUpdated.getPassword());
+
+        if (updatedUser.getRoles() == null) {
+            Set<Role> roles = userToBeUpdated.getRoles();
+            updatedUser.setRoles(roles);
+        }
 
         userRepository.save(updatedUser);
     }

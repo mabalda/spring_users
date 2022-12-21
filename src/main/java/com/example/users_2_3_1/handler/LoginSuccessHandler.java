@@ -49,11 +49,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             String authorityName = grantedAuthority.getAuthority();
 
             if(authorityName.equals("ROLE_ADMIN")) {
-                return "/admin/users";
+                return "/admin_page";
             }
         }
 
-        return "/user";
+        return "/user_page";
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package com.example.users_2_3_1.controller;
+package com.example.users_2_3_1.controller.rest;
 
 import com.example.users_2_3_1.model.User;
 import com.example.users_2_3_1.service.UserService;
@@ -40,16 +40,17 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-//    @GetMapping("/admin/users/new")
-//    public String newUserForm(User user) {
-//        return "new_user";
-//    }
-
-    @PostMapping("/admin/users/new")
+    @PostMapping(value= "/admin/users/new")
     public ResponseEntity<?> createNewUser(@RequestBody User user) {
         userService.saveUser(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/admin/delete_user/{id}")
+    public ResponseEntity<User> userForDelete(@PathVariable("id") Long id) {
+        User userToBeUpdated = userService.findById(id);
+        return new ResponseEntity<>(userToBeUpdated, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/delete_user/{id}")
@@ -59,12 +60,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/admin/update_user/{id}")
-//    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-//        User userToBeUpdated = userService.findById(id);
-//        model.addAttribute("user", userToBeUpdated);
-//        return "update_user";
-//    }
+    @GetMapping("/admin/update_user/{id}")
+    public ResponseEntity<User> userForUpdate(@PathVariable("id") Long id) {
+        User userToBeUpdated = userService.findById(id);
+        return new ResponseEntity<>(userToBeUpdated, HttpStatus.OK);
+    }
 
     @PutMapping("/admin/update_user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User updatedUser) {
