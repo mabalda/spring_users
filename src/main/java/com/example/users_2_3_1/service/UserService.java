@@ -41,6 +41,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<User> findUsersWhoWantToBeAdmin() {
+        return userRepository.findByRequestForAdmin(true);
+    }
+
     public User saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
@@ -48,7 +52,16 @@ public class UserService implements UserDetailsService {
             return userFromDB;
         }
 
+        user.setRequestForAdmin(false);
         return userRepository.save(user);
+    }
+
+    public void changeRequestForAdmin(Long id) {
+        User user = findById(id);
+        boolean status = user.isRequestForAdmin();
+        user.setRequestForAdmin(!status);
+
+        userRepository.save(user);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -61,6 +74,8 @@ public class UserService implements UserDetailsService {
             Set<Role> roles = userToBeUpdated.getRoles();
             updatedUser.setRoles(roles);
         }
+
+        updatedUser.setRequestForAdmin(userToBeUpdated.isRequestForAdmin());
 
         userRepository.save(updatedUser);
     }

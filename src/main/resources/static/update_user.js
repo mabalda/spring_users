@@ -50,6 +50,7 @@ $(function () {
                 success: function () {
                     $('.users-table-row').remove();
                     all_users();
+                    users_for_admin();
                 }
             });
         }

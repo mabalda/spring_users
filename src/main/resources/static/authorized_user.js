@@ -15,6 +15,7 @@ $(function(){
         });
 
         if (isAdmin == true) {
+            $('#request-for-admin-button').addClass('invisible');
             $('#sidebar-items').append('<li class="nav-item">\n' +
                 '                        <a href="/admin_page" class="nav-link" aria-current="page">\n' +
                 '                            Admin\n' +

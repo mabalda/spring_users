@@ -48,6 +48,9 @@ public class User implements Serializable, UserDetails {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @Column(name = "requestForAdmin")
+    private boolean requestForAdmin;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

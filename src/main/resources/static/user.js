@@ -1,4 +1,6 @@
-$(function(){
+window.get_user = get_user;
+
+function get_user(){
     $.getJSON("./user", function(result) {
         var roles = result.roles;
 
@@ -17,5 +19,12 @@ $(function(){
         $('#user-email').append(result.email);
         $('#user-age').append(result.age);
         $('#user-roles').append(role_text.trim());
+
+        if (result.requestForAdmin == 0) {
+            $('#request-for-admin-button').removeClass('invisible');
+            $('#request-for-admin-button').attr('value', result.id);
+        }
     });
-});
+}
+
+$(get_user());
