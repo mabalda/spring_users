@@ -11,6 +11,11 @@ public class ViewController {
         return "show_user";
     }
 
+    @GetMapping("/payment_page")
+    public String getPaymentPage() {
+        return "payment";
+    }
+
     @GetMapping("/admin_page")
     public String getAdminPage() {
         return "admin_page";

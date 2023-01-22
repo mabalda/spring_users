@@ -5,7 +5,7 @@ $(function(){
         const button = event.relatedTarget;
         const user_id = button.getAttribute('data-bs-whatever');
 
-        const url = "./admin/update_user/" + user_id;
+        const url = "./admin/users/" + user_id;
 
         $.getJSON(url, function (userData) {
             $('#userForUpdate-id').val(userData.id);

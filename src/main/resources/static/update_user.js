@@ -2,7 +2,7 @@ $(function () {
     $('#edit-button').click(
         function () {
             const user_id = $('#edit-button').attr('value');
-            const url = "./admin/update_user/" + user_id;
+            const url = "./admin/users/" + user_id;
 
             let jsonAdmin = {
                 "id": 2,
@@ -43,7 +43,6 @@ $(function () {
             $.ajax({
                 url: url,
                 type: 'put',
-                // method: 'patch',
                 data: JSON.stringify(formData),
                 contentType: "application/json;charset=UTF-8",
                 processData: false,

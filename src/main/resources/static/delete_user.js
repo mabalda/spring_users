@@ -2,7 +2,7 @@ $(function () {
     $('#delete-button').click(
         function () {
             const user_id = $('#delete-button').attr('value');
-            const url = "./admin/delete_user/" + user_id;
+            const url = "./admin/users/" + user_id;
 
             $.ajax({
                 type: 'delete',

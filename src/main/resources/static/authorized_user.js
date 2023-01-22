@@ -33,6 +33,11 @@ $(function(){
                 '                            User\n' +
                 '                        </a>\n' +
                 '                    </li>');
+            $('#sidebar-items').append('<li class="nav-item">\n' +
+                '                        <a href="/payment_page" class="nav-link" aria-current="page">\n' +
+                '                            Pay\n' +
+                '                        </a>\n' +
+                '                    </li>');
         }
 
         $('#navbar-email').append('<b>' + authorized_user.email + '</b> with roles ' + role_text.trim())

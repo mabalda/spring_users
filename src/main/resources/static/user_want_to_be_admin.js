@@ -2,8 +2,10 @@ $(function () {
     $('#request-for-admin-button').click(
         function () {
             const user_id = $('#request-for-admin-button').attr('value');
-            const url = "./user/want_to_be_admin/" + user_id;
-            const url_to_bot = "./user/bot/" + user_id;
+            const url = "./user/request";
+            const url_to_bot = "./discordbot/" + user_id;
+            const url_to_email = "./email/" + user_id;
+            const url_to_vk = "./vkbot/" + user_id;
 
             $.ajax({
                 url: url,
@@ -14,6 +16,8 @@ $(function () {
             });
 
             $.get(url_to_bot);
+            $.get(url_to_email);
+            $.get(url_to_vk);
         }
     )
 });

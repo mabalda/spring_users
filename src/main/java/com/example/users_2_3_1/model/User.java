@@ -51,6 +51,15 @@ public class User implements Serializable, UserDetails {
     @Column(name = "requestForAdmin")
     private boolean requestForAdmin;
 
+    @Column(name = "telegram_username")
+    private String telegramUsername;
+
+    @Column(name = "telegram_chat_id")
+    private String telegramChatId;
+
+    @Column(name = "telegram_code")
+    private String telegramCode;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
